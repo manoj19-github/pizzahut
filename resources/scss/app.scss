@@ -1,0 +1,42 @@
+@import "./variables";
+body{
+  font-family: "Lato",sans-serif;
+  -webkit-font-smoothing:antiliased;
+
+}
+nav{
+
+  .menuList li:last-child a{
+    background:$primary;
+    &:hover{
+      background-color:$primary-hover;
+    }
+  }
+  .menuList{
+
+      li a{
+        transition:$smooth;
+        &:hover{
+          color:$primary;
+        }
+    }
+  }
+}
+section.hero{
+  background:$secondary;
+}
+.size{
+  background:$secondary;
+}
+.add-to-cart{
+  border:2px solid $primary;
+  border-radius:2rem;
+  transition: $smooth;
+  &:hover{
+    background:$primary;
+    border-color:$pure;
+    color:$pure;
+
+
+  }
+}
