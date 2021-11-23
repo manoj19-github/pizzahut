@@ -1,0 +1,17 @@
+{
+  "name": "realtime-pizza-app",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "Manoj Santra",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.1"
+  }
+}
