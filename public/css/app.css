@@ -41,3 +41,37 @@ section.hero {
   color: #fff;
 }
 
+.btn-primary {
+  background: #fe5f1e;
+  color: #fff;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.btn-primary .fa-angle-double-left {
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #b23301;
+}
+
+.btn-primary:hover .fa-angle-double-left {
+  -webkit-transform: translateX(-30px);
+          transform: translateX(-30px);
+}
+
+.cart {
+  background: #f8f8f8;
+}
+
+.amount {
+  color: #fe5f1e;
+}
+
+section.login {
+  background: #f8f8f8;
+  min-height: calc(100vh-86px);
+}
+

@@ -32,5 +32,29 @@ export default StyleSheet.create({
     background: '#fe5f1e',
     borderColor: '#fff',
     color: '#fff'
+  },
+  'btn-primary': {
+    background: '#fe5f1e',
+    color: '#fff',
+    transition: 'all 0.4s ease-in-out'
+  },
+  'btn-primary fa-angle-double-left': {
+    transition: 'all 0.4s ease-in-out'
+  },
+  'btn-primary:hover': {
+    background: '#b23301'
+  },
+  'btn-primary:hover fa-angle-double-left': {
+    transform: 'translateX(-30px)'
+  },
+  cart: {
+    background: '#f8f8f8'
+  },
+  amount: {
+    color: '#fe5f1e'
+  },
+  sectionlogin: {
+    background: '#f8f8f8',
+    minHeight: [{ unit: 'vh', value: NaN }]
   }
 });
