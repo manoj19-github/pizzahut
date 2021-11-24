@@ -1,4 +1,5 @@
 <section class="cart py-16">
+  <% if(session.cart){ %>
   <!-- order container -->
   <div class="order container mx-auto w-1/2">
       <!-- order heading -->
@@ -8,80 +9,31 @@
     </div>
     <!-- order heading end -->
 
+  <% for(let pizza of Object.values(session?.cart?.items)){ %>
+
+
     <!-- order items start -->
     <div class="pizza-list mt-5 flex items-center justify-between border-b border-gray-400 pb-4">
         <div class="flex items-center">
-          <img src="/images/pizza.png" alt="pizza" class="w-20"/>
+          <img src="/images/<%= pizza.item.image %>" alt="pizza" class="w-20"/>
           <div class="ml-4 text-center">
-            <h1 class="text-xl">Marinara</h1>
-            <span class="text-xs uppercase">Medium</span>
+            <h1 class="text-xl"><%= pizza.item.name %></h1>
+            <span class="text-xs uppercase"><%= pizza.item.size %></span>
           </div>
         </div>
-        <span>1 Pcs</span>
-        <span><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
-        <span><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
+        <span><%= pizza.qty %> Pcs</span>
+        <span><i class="fa fa-inr" aria-hidden="true"></i><%= pizza.item.price*pizza.qty %></span>
+
+        <span data-cartId="<%= pizza.item._id %>" class="del-cart-items"><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
       </div>
-      <!-- order items end -->
-      <!-- order items start -->
-      <div class="pizza-list mt-5 flex items-center justify-between border-b border-gray-400 pb-4">
-          <div class="flex items-center">
-            <img src="/images/pizza.png" alt="pizza" class="w-20"/>
-            <div class="ml-4 text-center">
-              <h1 class="text-xl">Marinara</h1>
-              <span class="text-xs uppercase">Medium</span>
-            </div>
-          </div>
-          <span>1 Pcs</span>
-          <span><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
-          <span><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
-        </div>
-        <!-- order items end -->
-        <!-- order items start -->
-        <div class="pizza-list mt-5 flex items-center justify-between border-b border-gray-400 pb-4">
-            <div class="flex items-center">
-              <img src="/images/pizza.png" alt="pizza" class="w-20"/>
-              <div class="ml-4 text-center">
-                <h1 class="text-xl">Marinara</h1>
-                <span class="text-xs uppercase">Medium</span>
-              </div>
-            </div>
-            <span>1 Pcs</span>
-            <span><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
-            <span><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
-          </div>
-          <!-- order items end -->
-          <!-- order items start -->
-          <div class="pizza-list mt-5 flex items-center justify-between border-b border-gray-400 pb-4">
-              <div class="flex items-center">
-                <img src="/images/pizza.png" alt="pizza" class="w-20"/>
-                <div class="ml-4 text-center">
-                  <h1 class="text-xl">Marinara</h1>
-                  <span class="text-xs uppercase">Medium</span>
-                </div>
-              </div>
-              <span>1 Pcs</span>
-              <span><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
-              <span><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
-            </div>
-            <!-- order items end -->
-            <!-- order items start -->
-            <div class="pizza-list mt-5 flex items-center justify-between border-b border-gray-400 pb-4">
-                <div class="flex items-center">
-                  <img src="/images/pizza.png" alt="pizza" class="w-20"/>
-                  <div class="ml-4 text-center">
-                    <h1 class="text-xl">Marinara</h1>
-                    <span class="text-xs uppercase">Medium</span>
-                  </div>
-                </div>
-                <span>1 Pcs</span>
-                <span><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
-                <span><i class="fa fa-window-close text-red-600 cursor-pointer" aria-hidden="true"></i></span>
-              </div>
-              <!-- order items end -->
+      <% } %>
+    <!-- order items end -->
               <div class="py-5">
                 <div class="flex items-center justify-end">
-                  <span class="text-lg font-bold">Total Amount : </span>
-                    <span class="amount text-2xl font-bold ml-2"><i class="fa fa-inr" aria-hidden="true"></i> 450</span>
+                  <span class="text-lg font-bold">Total Amount :</span>
+                    <span class="amount text-2xl font-bold ml-2"><i class="fa fa-inr" aria-hidden="true"></i>
+                  <%= session.cart.totalPrice %>
+                      </span>
                 </div>
               </div>
               <!-- user info -->
@@ -105,12 +57,12 @@
               <div class="flex items-center justify-end">
                 <a href="#" class="inline-block  cursor-pointer px-6 btn-primary px-5 py-2 rounded-full text-white font-bold mt-6">Login to continue</a>
               </div>
-
     </div>
-
-
   <!-- order container end-->
-  <!-- <div class="empty-cart">
+<% } else { %>
+
+
+  <div class="empty-cart">
     <div class="container mx-auto text-center ">
       <div class="flex items-center justify-center mb-2 ">
         <h1 class="mr-5 text-3xl ">Cart Emtpy</h1>
@@ -125,6 +77,7 @@
         Go Back</a>
     </div>
 
-  </div> -->
+  </div>
+<% } %>
 
 </section>
