@@ -396,3 +396,13 @@ section.login {
   padding-left: 10px !important;
 }
 
+.fb-btn {
+  background: #2962ff;
+  color: #f8f8f8;
+}
+
+.Google-btn {
+  background: #dc4d32;
+  color: #f8f8f8;
+}
+

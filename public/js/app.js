@@ -1107,7 +1107,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(35);
+module.exports = __webpack_require__(36);
 
 
 /***/ }),
@@ -1120,7 +1120,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_noty__ = __webpack_require__(40);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_noty__ = __webpack_require__(35);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_noty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_noty__);
 
 
@@ -1136,6 +1136,14 @@ function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, a
 var addToCart = document.querySelectorAll(".add-to-cart");
 var cartCounter = document.querySelector("#cartCounter");
 var delCart = document.querySelectorAll(".del-cart-items");
+var logoutForm = document.querySelector("#logOut");
+var logoutBtn = document.querySelector("#logout-btn");
+
+logoutBtn.addEventListener("click", function (e) {
+  e.preventDefault();
+  logoutForm.submit();
+});
+
 //data-cartId
 // cart functionality method
 var deleteCart = function () {
@@ -3220,16 +3228,6 @@ module.exports = function isAxiosError(payload) {
 
 /***/ }),
 /* 35 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* 
@@ -6356,6 +6354,12 @@ module.exports = g;
 /******/ ]);
 });
 //# sourceMappingURL=noty.js.map
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

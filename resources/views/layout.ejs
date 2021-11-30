@@ -24,9 +24,19 @@
         <ul class="flex menuList">
           <li class="mx-3"><a href="#">Menu</a></li>
           <li class="mx-3"><a href="#">Offers</a></li>
-          <li class="mx-3"><a href="/register">Register</a></li>
-          <li class="mx-3"><a href="/login">Login</a></li>
-          <li class="mx-3"><a href="/cart " class="inline-block px-4 py-2 rounded-full flex items-center">
+          <% if(user){ %>
+            <li class="mx-3">
+              <form action="/logout" method="POST" id="logOut">
+              </form>
+              <a href="#"id="logout-btn">Logout</a>
+            </li>
+
+          <% }else{ %>
+            <li class="mx-3"><a href="/login">Login</a></li>
+            <li class="mx-3"><a href="/register">Register</a></li>
+          <% } %>
+            <li class="mx-3"><a href="/cart " class="inline-block px-4 py-2 rounded-full flex items-center">
+
             <span id="cartCounter" class="text-white font-bold pr-2"><%= session?.cart?.totalQty %></span>
             <img src="/images/cart.png" alt="cart">
           </a></li>

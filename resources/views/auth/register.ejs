@@ -2,20 +2,30 @@
 
 
 
-  <form class="mt-8 w-1/2 mx-auto p-6" action="#" method="POST">
+  <form class="mt-8 w-1/2 mx-auto p-6" action="/register" method="POST">
+    <% if(messages.error){ %>
+      <div class="text-center text-sm text-red-500">
+        <%= messages.error %>
+      </div>
+    <% } %>
     <input type="hidden" name="remember" value="true">
     <div class="rounded-md shadow-sm -space-y-px">
       <div>
         <label for="name" class="sr-only">Name</label>
-        <input placeholder="Name" id="name" name="name" type="text" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4" required/>
+        <input
+          placeholder="Name"
+          id="name" name="name"
+          type="text"
+          value="<%= messages.name %>"
+          class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4"/>
       </div>
       <div>
         <label for="email-address" class="sr-only ">Email address</label>
-        <input id="email-address" name="email" type="email" autocomplete="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4" placeholder="Email address" required>
+        <input id="email-address" value="<%= messages.email %>" name="email" type="text" autocomplete="email" class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4" placeholder="Email address" >
       </div>
       <div>
         <label for="password" class="sr-only">Password</label>
-        <input id="password" name="password" type="password" autocomplete="current-password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4" placeholder="Password" required>
+        <input id="password" name="password" type="password" autocomplete="current-password"  class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm my-4" placeholder="Password" >
       </div>
     </div>
     <div>
@@ -24,5 +34,6 @@
       </button>
     </div>
   </form>
-  <p class="text-center text-sm text-gray-700">Are You already registered ? <a href="/register" class="ml-5 btn-primary rounded-full px-5 py-2">Log in</a></p>
+
+  <p class="text-center text-sm text-gray-700">Are You already registered ? <a href="/login" class="ml-5 btn-primary rounded-full px-5 py-2">Log in</a></p>
 </section>

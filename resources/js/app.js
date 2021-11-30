@@ -6,6 +6,14 @@ import Noty from "noty"
 let addToCart=document.querySelectorAll(".add-to-cart")
 let cartCounter=document.querySelector("#cartCounter")
 let delCart=document.querySelectorAll(".del-cart-items")
+let logoutForm=document.querySelector("#logOut")
+let logoutBtn=document.querySelector("#logout-btn")
+
+logoutBtn.addEventListener("click",(e)=>{
+  e.preventDefault()
+  logoutForm.submit()
+})
+
 //data-cartId
 // cart functionality method
 const deleteCart=async(delId)=>{
