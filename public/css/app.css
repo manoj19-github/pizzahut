@@ -406,3 +406,24 @@ section.login {
   color: #f8f8f8;
 }
 
+a.order-link {
+  cursor: pointer;
+  color: #fe5f1e;
+  text-decoration: none;
+  -webkit-transition: all 0.4s ease-in-out;
+  transition: all 0.4s ease-in-out;
+}
+
+a.order-link:hover {
+  border-bottom: 1px solid #fe5f1e;
+}
+
+#orderTableBody tr:nth-child(odd) {
+  background: #B3B6B4;
+  border-bottom: 1px solid gray;
+}
+
+#orderTableBody tr:nth-child(odd) select {
+  background: #B3B6B4;
+}
+

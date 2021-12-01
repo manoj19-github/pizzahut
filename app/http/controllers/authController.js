@@ -109,7 +109,7 @@ const authController=()=>{
     },
     logout(req,res){
       req.logout()
-      return res.redirect("/  ")
+      return res.redirect("/")
     }
 
 

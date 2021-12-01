@@ -38,34 +38,45 @@
               </div>
               <!-- user info -->
               <div class=" mt-5">
-                <form class="w-full" action="index.html" method="post">
-                  <div class="flex items-center">
-                    <input placeholder="Your Name" type="text" name="name" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
-                    <input placeholder="Email Address" type="email" name="email" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
-                  </div>
-                  <div class="flex items-center">
-                    <input placeholder="pin code" type="email" name="number" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
-                    <input placeholder="Contact No " type="phone" name="phone" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
-                  </div>
-                  <textarea name="name"  class="border border-gray-400 py-1 mb-2 lg:w-full"placeholder="delivery address"></textarea>
-                  <!-- <div class="flex items-center justify-end">
-                    <button type="submit" name="button" class="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6">Order Now</button>
-                </div> -->
-                </form>
-              </div>
-              <!-- user info end -->
+              <% if(user){ %>
+
+                  <form class="w-full" action="/orders" method="POST" class="mt-12">
+                    <div class="flex items-center">
+                      <input placeholder="Your Name" type="text" name="name" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
+                      <input placeholder="Email Address" type="text" name="email" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
+                    </div>
+                    <div class="flex items-center">
+                      <input placeholder="pin code" type="text" name="pin" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
+                      <input placeholder="Contact No " type="phone" name="phone" value="" class="border border-gray-400 py-1 m-2 lg:w-1/2  "/>
+                    </div>
+                    <textarea name="address"  class="border border-gray-400 py-1 mb-2 lg:w-full"placeholder="delivery address"></textarea>
+                    <!-- <div class="flex items-center justify-end">
+                      <button type="submit" name="button" class="btn-primary px-6 py-2 rounded-full text-white font-bold mt-6">Order Now</button>
+                  </div> -->
+
+
+                <!-- user info end -->
+                <div class="flex items-center justify-end">
+                  <input type="submit" class="inline-block  cursor-pointer px-6 btn-primary px-5 py-2 rounded-full text-white font-bold mt-6" value="Order Now">
+                </div>
+              </form>
+            <% }else{ %>
               <div class="flex items-center justify-end">
-                <a href="#" class="inline-block  cursor-pointer px-6 btn-primary px-5 py-2 rounded-full text-white font-bold mt-6">Login to continue</a>
+                <a href="#" class="inline-block  cursor-pointer px-6 btn-primary px-5 py-2 rounded-full text-white font-bold mt-6">Login To Continue</a>
               </div>
+           <% } %>
+
+           </div>
+
     </div>
   <!-- order container end-->
-<% } else { %>
 
+<% }else{ %>
 
   <div class="empty-cart">
     <div class="container mx-auto text-center ">
       <div class="flex items-center justify-center mb-2 ">
-        <h1 class="mr-5 text-3xl ">Cart Emtpy</h1>
+        <h1 class="mr-5 text-3xl ">Cart Empty</h1>
         <img src="/images/emoji.png" alt="emoji" class="w-10"/>
       </div>
       <p class="mt-2 text-gray-500 text-lg">You probably haven't ordered a pizza yet</p>

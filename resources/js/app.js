@@ -1,6 +1,7 @@
 // pacakage requirements
 import axios from "axios"
 import Noty from "noty"
+import  initAdmin from "./admin"
 
 // target our cart-btn and cart-counter
 let addToCart=document.querySelectorAll(".add-to-cart")
@@ -8,9 +9,11 @@ let cartCounter=document.querySelector("#cartCounter")
 let delCart=document.querySelectorAll(".del-cart-items")
 let logoutForm=document.querySelector("#logOut")
 let logoutBtn=document.querySelector("#logout-btn")
+let alertMsg=document.querySelector("#success-alert")
 
 logoutBtn.addEventListener("click",(e)=>{
   e.preventDefault()
+  console.log("logout btn click")
   logoutForm.submit()
 })
 
@@ -77,3 +80,15 @@ delCart.forEach((btn)=>{
 
   })
 })
+
+
+// remove success alert message after 3 second
+
+if(alertMsg){
+  setTimeout(()=>{
+    alertMsg.remove()
+  },3000)
+
+}
+
+initAdmin()

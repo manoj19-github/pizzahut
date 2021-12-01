@@ -1,0 +1,50 @@
+<section class="light-section">
+  <div class="container mx-auto pt-2">
+    <h1 class="font-bold text-lg my-2">All Orders</h1>
+    <% if(messages.success){ %>
+    <div id="success-alert" class="flex  item-center bg-green-500 text-white text-sm font-bold px-4 py-2 rounded-md" id="success-alert" role="alert">
+      <svg class="w-6 mx-5" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd" />
+      </svg>
+      <p>order placed successfully</p>
+
+    </div>
+    <% } %>
+    <table class="w-full table-auto bg-white">
+      <thead>
+        <tr>
+          <th class="px-3 py-2 text-left font-bold">Orders</th>
+          <th class="px-3 py-2 text-left font-bold">Contact no. </th>
+          <th class="px-3 py-2 text-left font-bold">Address</th>
+          <th class="px-3 py-2 text-left font-bold">Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(myOrders.length){ %>
+          <% myOrders.map((order)=>{ %>
+            <tr>
+              <td class="border px-3 py-2">
+                <a class="link order-link" href="#"><%= order._id %></a>
+              </td>
+              <td class="border px-3 py-2"><%= order.phone %></td>
+              <td class="border px-3 py-2"><%= order.address %></td>
+              <td class="border px-3 py-2"><%= moment(order.createdAt).tz("Asia/Kolkata").format("hh:mm A") %></td>
+            </tr>
+
+        <%  }) %>
+
+        <% }else{ %>
+          <tr>
+            <td class="p-4">No orders </td>
+          </tr>
+          <% } %>
+
+      </tbody>
+
+    </table>
+
+
+
+  </div>
+
+</section>
