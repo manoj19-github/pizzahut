@@ -24,7 +24,7 @@
           <% myOrders.map((order)=>{ %>
             <tr>
               <td class="border px-3 py-2">
-                <a class="link order-link" href="#"><%= order._id %></a>
+                <a class="link order-link" href="/customer/orders/<%= order._id %>" class=""><%= order._id %></a>
               </td>
               <td class="border px-3 py-2"><%= order.phone %></td>
               <td class="border px-3 py-2"><%= order.address %></td>

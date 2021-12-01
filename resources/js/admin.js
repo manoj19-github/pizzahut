@@ -1,6 +1,6 @@
 import axios from "axios"
 import moment from "moment-timezone"
-
+import Noty from "noty"
 const renderItems=(items)=>{
   let parsedItems=Object.values(items)
   return parsedItems.map((menuItem)=>{
@@ -20,7 +20,7 @@ const generateMarkup=(orders)=>{
       <td class="border px-4 py-2">
         <div class="inline-block relative w-64">
           <form action="/admin/order/status" method="POST">
-            <input type="hidden" name="orderId" value="" value='${order._id}' />
+            <input type="hidden" name="orderId" value="${order._id}" />
             <select name="status" onchange="this.form.submit()" class="block appearance-none w-full bg-white border border-gray-300 hover:border-gray-900 px-4 py-2 rounded shadow leading-tight focus:ountline-none focus:shadow-outline">
                   <option value="order_placed" ${order.status =="order_placed" ? "selected":""}>Placed</option>
                   <option value="confirmed" ${order.status =="confirmed" ? "selected":""}>Confirmed</option>
@@ -47,7 +47,9 @@ const generateMarkup=(orders)=>{
 
 
 }
-const initAdmin=async()=>{
+const initAdmin=async(socket)=>{
+  let orderData=[]
+
   try{
     const orderTable=document.querySelector("#orderTableBody")
 
@@ -58,15 +60,36 @@ const initAdmin=async()=>{
         "X-Requested-With":"XMLHttpRequest"
       }
     })
-    console.log("data",data)
+    orderData=data
 
-    markup=generateMarkup(data)
+    console.log("data",orderData)
+
+    markup=generateMarkup(orderData)
     orderTable.innerHTML=markup
-    console.log("mymarkup",markup)
+
+    socket.on("orderPlaced",(newOrder)=>{
+      console.log("newOrder",newOrder)
+      new Noty({
+        type:"success",
+        timeout:1000,
+        text:"new Order Added ",
+        progressBar:false
+      }).show()
+      orderData.unshift(newOrder)
+      console.log("new data",orderData)
+      orderTable.innerHTML=""
+      orderTable.innerHTML=generateMarkup(orderData)
+
+    })
+
+
   }catch(err){
     console.log(`something went wrong ${err}`)
   }
 
 
+
 }
+
+
 export default initAdmin

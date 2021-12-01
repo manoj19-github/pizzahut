@@ -20,7 +20,6 @@ const isAdmin=async(req,res,next)=>{
     try{
       if(req.session?.passport?.user){
         const admin=await User.find({$and:[{_id:req.session.passport.user},{role:"admin"}]})
-        console.log(admin)
         if(admin.length>0) return next()
         else{
           req.flash("error","this is page can only for admin")

@@ -3,7 +3,7 @@ const Order=require("../../../models/orderModel")
 const adminOrderController=()=>{
   return{
      index(req,res){
-       Order.find({status:{$ne:"delivered"}},null,{sort:{'createdAt':-1}})
+       Order.find({$and :[{status:{$ne:"delivered"}},{status:{$ne:"rejected"}}]},null,{sort:{'createdAt':-1}})
         .populate('customerId','-password')
         .exec((err,orders)=>{
           if(err){

@@ -21861,13 +21861,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_noty__ = __webpack_require__(171);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_noty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_noty__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__admin__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment_timezone__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_moment_timezone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_moment_timezone__);
 
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _this = this;
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 // pacakage requirements
+
 
 
 
@@ -21879,6 +21884,15 @@ var delCart = document.querySelectorAll(".del-cart-items");
 var logoutForm = document.querySelector("#logOut");
 var logoutBtn = document.querySelector("#logout-btn");
 var alertMsg = document.querySelector("#success-alert");
+var deliveryStatus = document.querySelector(".deliveryStatus");
+var delivery = document.querySelector(".delivery");
+
+var Order = document.querySelector("#hiddenOrder") ? document.querySelector("#hiddenOrder").value : null;
+var statuses = document.querySelectorAll(".status-line");
+var orderData = void 0;
+if (Order) {
+  orderData = JSON.parse(Order);
+}
 
 logoutBtn.addEventListener("click", function (e) {
   e.preventDefault();
@@ -21904,7 +21918,7 @@ var deleteCart = function () {
             _ref2 = _context.sent;
             data = _ref2.data;
 
-            console.log(data);
+
             new __WEBPACK_IMPORTED_MODULE_2_noty___default.a({
               type: "success",
               timeout: 1000,
@@ -21912,11 +21926,11 @@ var deleteCart = function () {
               progressBar: false
             }).show();
 
-            _context.next = 13;
+            _context.next = 12;
             break;
 
-          case 9:
-            _context.prev = 9;
+          case 8:
+            _context.prev = 8;
             _context.t0 = _context["catch"](0);
 
             console.log(_context.t0);
@@ -21927,12 +21941,12 @@ var deleteCart = function () {
               progressBar: false
             }).show();
 
-          case 13:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, _this, [[0, 9]]);
+    }, _callee, _this, [[0, 8]]);
   }));
 
   return function deleteCart(_x) {
@@ -21955,7 +21969,7 @@ var updateCart = function () {
             _ref4 = _context2.sent;
             data = _ref4.data;
 
-            console.log(data);
+
             cartCounter.innerText = data.totalQty;
             new __WEBPACK_IMPORTED_MODULE_2_noty___default.a({
               type: "success",
@@ -21963,11 +21977,11 @@ var updateCart = function () {
               text: "Item added to cart",
               progressBar: false
             }).show();
-            _context2.next = 14;
+            _context2.next = 13;
             break;
 
-          case 10:
-            _context2.prev = 10;
+          case 9:
+            _context2.prev = 9;
             _context2.t0 = _context2["catch"](0);
 
             console.log(_context2.t0);
@@ -21978,12 +21992,12 @@ var updateCart = function () {
               progressBar: false
             }).show();
 
-          case 14:
+          case 13:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, _this, [[0, 10]]);
+    }, _callee2, _this, [[0, 9]]);
   }));
 
   return function updateCart(_x2) {
@@ -22014,7 +22028,78 @@ if (alertMsg) {
   }, 3000);
 }
 
-Object(__WEBPACK_IMPORTED_MODULE_3__admin__["a" /* default */])();
+// change order status
+var updateStatus = function updateStatus(orderData) {
+
+  var time = document.createElement("small");
+
+  var stepCompleted = true;
+  statuses.forEach(function (status) {
+    status.classList.remove("step-completed");
+    status.classList.remove("current-status");
+  });
+  statuses.forEach(function (status) {
+    var dataProp = status.getAttribute("data-status");
+    if (stepCompleted) {
+      status.classList.add("step-completed");
+    }
+    if (dataProp === orderData.status) {
+      stepCompleted = false;
+      time.innerText = __WEBPACK_IMPORTED_MODULE_4_moment_timezone___default()(orderData.updatedAt).tz("Asia/Kolkata").format("hh:mm A");
+      status.appendChild(time);
+      if (status) {
+        status.classList.add("current-status");
+      }
+    }
+  });
+  if (orderData.status === "rejected") {
+    delivery.classList.add("current-status");
+    delivery.classList.add("rejected");
+
+    if (delivery.classList.contains("step-completed")) {
+      delivery.classList.remove("step-completed");
+    }
+    deliveryStatus.innerText = "Order Rejected";
+  }
+};
+console.log("manoj");
+if (orderData) {
+  updateStatus(orderData);
+}
+
+console.log("manoj");
+
+// socket work
+
+var socket = io();
+if (orderData) {
+  socket.emit("join", "order_" + orderData._id);
+}
+
+var adminAreaPath = window.location.pathname;
+console.log("adminpath", adminAreaPath);
+if (adminAreaPath.includes("admin")) {
+  Object(__WEBPACK_IMPORTED_MODULE_3__admin__["a" /* default */])(socket);
+  console.log("join");
+  socket.emit("join", "adminRoom");
+}
+socket.on('orderUpdated', function (data) {
+  try {
+    var updatedOrder = _extends({}, orderData);
+    updatedOrder.updatedAt = __WEBPACK_IMPORTED_MODULE_4_moment_timezone___default()().format();
+    updatedOrder.status = data.status;
+    console.log(data);
+    updateStatus(updatedOrder);
+    new __WEBPACK_IMPORTED_MODULE_2_noty___default.a({
+      type: "success",
+      timeout: 1000,
+      text: "Order Updated ",
+      progressBar: false
+    }).show();
+  } catch (err) {
+    console.log(err);
+  }
+});
 
 /***/ }),
 /* 151 */
@@ -27105,6 +27190,8 @@ module.exports = g;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_axios___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_axios__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment_timezone__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_moment_timezone___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_moment_timezone__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_noty__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_noty___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_noty__);
 
 
 var _this = this;
@@ -27122,57 +27209,75 @@ var renderItems = function renderItems(items) {
 };
 var generateMarkup = function generateMarkup(orders) {
   return orders.map(function (order) {
-    return "<tr>\n      <td class=\"border px-4 py-2 text-green-300\">\n        <p class=\"text-green-800 text-sm font-bold\">" + order._id + "</p>\n        <div>" + renderItems(order.items) + "</div>\n      </td>\n      <td class=\"border px-4 py-2\">" + order.customerId.name + "</td>\n      <td class=\"border px-4 py-2\">" + order.phone + "</td>\n      <td class=\"border px-4 py-2\">" + order.address + "</td>\n      <td class=\"border px-4 py-2\">\n        <div class=\"inline-block relative w-64\">\n          <form action=\"/admin/order/status\" method=\"POST\">\n            <input type=\"hidden\" name=\"orderId\" value=\"\" value='" + order._id + "' />\n            <select name=\"status\" onchange=\"this.form.submit()\" class=\"block appearance-none w-full bg-white border border-gray-300 hover:border-gray-900 px-4 py-2 rounded shadow leading-tight focus:ountline-none focus:shadow-outline\">\n                  <option value=\"order_placed\" " + (order.status == "order_placed" ? "selected" : "") + ">Placed</option>\n                  <option value=\"confirmed\" " + (order.status == "confirmed" ? "selected" : "") + ">Confirmed</option>\n                  <option value=\"prepared\" " + (order.status == "prepared" ? "selected" : "") + ">Prepared</option>\n                  <option value=\"shipped\" " + (order.status == "shipped" ? "selected" : "") + ">Shipped</option>\n                  <option value=\"delivered\" " + (order.status == "delivered" ? "selected" : "") + ">Delivered</option>\n                  <option value=\"rejected\" " + (order.status == "rejected" ? "selected" : "") + ">Rejected</option>\n            </select>\n          </form>\n          <div class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n          <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n            <path fill-rule=\"evenodd\" d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\" clip-rule=\"evenodd\" />\n          </svg>\n          </div>\n        </div>\n      </td>\n      <td class=\"border px-4 py-2\">\n        " + __WEBPACK_IMPORTED_MODULE_2_moment_timezone___default()(order.createdAt).tz("Asia/Kolkata").format("hh:mm A") + "\n      </td>\n    </tr>\n\n      ";
+    return "<tr>\n      <td class=\"border px-4 py-2 text-green-300\">\n        <p class=\"text-green-800 text-sm font-bold\">" + order._id + "</p>\n        <div>" + renderItems(order.items) + "</div>\n      </td>\n      <td class=\"border px-4 py-2\">" + order.customerId.name + "</td>\n      <td class=\"border px-4 py-2\">" + order.phone + "</td>\n      <td class=\"border px-4 py-2\">" + order.address + "</td>\n      <td class=\"border px-4 py-2\">\n        <div class=\"inline-block relative w-64\">\n          <form action=\"/admin/order/status\" method=\"POST\">\n            <input type=\"hidden\" name=\"orderId\" value=\"" + order._id + "\" />\n            <select name=\"status\" onchange=\"this.form.submit()\" class=\"block appearance-none w-full bg-white border border-gray-300 hover:border-gray-900 px-4 py-2 rounded shadow leading-tight focus:ountline-none focus:shadow-outline\">\n                  <option value=\"order_placed\" " + (order.status == "order_placed" ? "selected" : "") + ">Placed</option>\n                  <option value=\"confirmed\" " + (order.status == "confirmed" ? "selected" : "") + ">Confirmed</option>\n                  <option value=\"prepared\" " + (order.status == "prepared" ? "selected" : "") + ">Prepared</option>\n                  <option value=\"shipped\" " + (order.status == "shipped" ? "selected" : "") + ">Shipped</option>\n                  <option value=\"delivered\" " + (order.status == "delivered" ? "selected" : "") + ">Delivered</option>\n                  <option value=\"rejected\" " + (order.status == "rejected" ? "selected" : "") + ">Rejected</option>\n            </select>\n          </form>\n          <div class=\"pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700\">\n          <svg class=\"fill-current h-4 w-4\" xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5\" viewBox=\"0 0 20 20\" fill=\"currentColor\">\n            <path fill-rule=\"evenodd\" d=\"M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z\" clip-rule=\"evenodd\" />\n          </svg>\n          </div>\n        </div>\n      </td>\n      <td class=\"border px-4 py-2\">\n        " + __WEBPACK_IMPORTED_MODULE_2_moment_timezone___default()(order.createdAt).tz("Asia/Kolkata").format("hh:mm A") + "\n      </td>\n    </tr>\n\n      ";
   }).join("");
 };
 var initAdmin = function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee() {
-    var orderTable, markup, _ref2, data;
+  var _ref = _asyncToGenerator( /*#__PURE__*/__WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.mark(function _callee(socket) {
+    var orderData, orderTable, markup, _ref2, data;
 
     return __WEBPACK_IMPORTED_MODULE_0_babel_runtime_regenerator___default.a.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
+            orderData = [];
+            _context.prev = 1;
             orderTable = document.querySelector("#orderTableBody");
             markup = void 0;
-            _context.next = 5;
+            _context.next = 6;
             return __WEBPACK_IMPORTED_MODULE_1_axios___default.a.get("/admin/orders", {
               headers: {
                 "X-Requested-With": "XMLHttpRequest"
               }
             });
 
-          case 5:
+          case 6:
             _ref2 = _context.sent;
             data = _ref2.data;
 
-            console.log("data", data);
+            orderData = data;
 
-            markup = generateMarkup(data);
+            console.log("data", orderData);
+
+            markup = generateMarkup(orderData);
             orderTable.innerHTML = markup;
-            console.log("mymarkup", markup);
-            _context.next = 16;
+
+            socket.on("orderPlaced", function (newOrder) {
+              console.log("newOrder", newOrder);
+              new __WEBPACK_IMPORTED_MODULE_3_noty___default.a({
+                type: "success",
+                timeout: 1000,
+                text: "new Order Added ",
+                progressBar: false
+              }).show();
+              orderData.unshift(newOrder);
+              console.log("new data", orderData);
+              orderTable.innerHTML = "";
+              orderTable.innerHTML = generateMarkup(orderData);
+            });
+
+            _context.next = 18;
             break;
 
-          case 13:
-            _context.prev = 13;
-            _context.t0 = _context["catch"](0);
+          case 15:
+            _context.prev = 15;
+            _context.t0 = _context["catch"](1);
 
             console.log("something went wrong " + _context.t0);
 
-          case 16:
+          case 18:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, _this, [[0, 13]]);
+    }, _callee, _this, [[1, 15]]);
   }));
 
-  return function initAdmin() {
+  return function initAdmin(_x) {
     return _ref.apply(this, arguments);
   };
 }();
+
 /* harmony default export */ __webpack_exports__["a"] = (initAdmin);
 
 /***/ }),

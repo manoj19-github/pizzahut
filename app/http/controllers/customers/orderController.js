@@ -12,7 +12,7 @@ const orderCTRL=()=>{
           phone,
           address
         }=req.body
-        console.log(name,email,pin,phone,address)
+
         if(!name ||!email||!pin||!phone||!address){
           req.flash("error","All fields are required")
           return res.redirect("/cart")
@@ -27,12 +27,17 @@ const orderCTRL=()=>{
           address
         })
         const order=await newOrder.save()
-        if(order){
-           req.flash("success","Order placed successfully")
-           delete req.session.cart
-        }
+        Order.populate(order,{path:'customerId'},(error,placedOrder)=>{
+             req.flash("success","Order placed successfully")
+             delete req.session.cart
+             const eventEmitter=req.app.get("eventEmitter")
+             eventEmitter.emit("orderPlaced",placedOrder)
+             console.log("order placed")
+             return res.redirect("/customer/orders")
+        })
+        // Emit event
 
-        return res.redirect("/customer/orders")
+
       }catch(err){
         req.flash("error",`Something went wrong ${err}`)
         return res.redirect("/cart")
@@ -50,7 +55,26 @@ const orderCTRL=()=>{
 
       }catch(err){
         console.log(err)
+        res.redirect("/")
       }
+    },
+    async showOrder(req,res){
+
+      try{
+        const order=await Order.findById(req.params.id)
+        // authorized User
+        if(req?.session?.passport?.user.toString()===order.customerId.toString())
+
+          return res.render("customers/singleOrder",{order})
+        return res.redirect("/")
+
+
+
+      }catch(err){
+
+      }
+
+
     }
 
   }

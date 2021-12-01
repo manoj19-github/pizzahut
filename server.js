@@ -12,6 +12,7 @@ const flash=require("express-flash")
 const MongoDBStore = require('connect-mongo');
 const passport=require("passport")
 const localPassport=require("./app/config/passport")
+const Emitter=require("events")
 
 
 
@@ -53,14 +54,17 @@ app.use(session({
     cookie:{maxAge:1000*60*60},
     //cookie: { secure: true }
 }))
+
+// Event Emitter
+const eventEmitter=new Emitter()
+app.set('eventEmitter',eventEmitter)
 app.use(flash())
 
 // Global middleware
 app.use((req,res,next)=>{
   res.locals.session=req.session
   res.locals.user=req?.session?.passport?.user
-  console.log(res.locals.user)
-  console.log(req.session)
+
   next()
 })
 
@@ -74,8 +78,28 @@ app.use("/",webRoutes)
 const PORT=process.env.PORT||5000
 
 // server listening
-app.listen(PORT,async()=>{
+const server=app.listen(PORT,async()=>{
   // database connection
     await connDB()
   console.log(`server is running on port ${PORT}`)
+})
+
+
+// Socket work
+const io=require("socket.io")(server)
+io.on("connection",(socket)=>{
+
+  //  Join
+  console.log("socket id",socket.id)
+  socket.on("join",(orderId)=>{
+    console.log(orderId)
+    socket.join(orderId)
+  })
+})
+eventEmitter.on("orderUpdated",(data)=>{
+  io.to(`order_${data.id}`).emit('orderUpdated',data)
+})
+eventEmitter.on("orderPlaced",(orderData)=>{
+  console.log("order placed again")
+  io.to("adminRoom").emit("orderPlaced",orderData)
 })
