@@ -1,13 +1,27 @@
 {
     "private": true,
+    "babel": {
+        "presets": [
+            "@babel/preset-env"
+        ],
+        "plugins": [
+            "@babel/plugin-proposal-class-properties"
+        ]
+    },
     "scripts": {
         "dev": "nodemon server.js",
-        "serve": "node server.js",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "npm run development -- --watch",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+        "start": "node server.js",
+        "development": "mix",
+        "watch": "npx mix watch",
+        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
     "dependencies": {
+        "@babel/cli": "^7.16.0",
+        "@babel/core": "^7.16.0",
+        "@babel/node": "^7.16.0",
+        "@babel/plugin-proposal-class-properties": "^7.16.0",
+        "@babel/preset-env": "^7.16.4",
+        "@stripe/stripe-js": "^1.21.2",
         "axios": "^0.24.0",
         "bcrypt": "^5.0.1",
         "body-parser": "^1.19.0",
@@ -22,16 +36,28 @@
         "express-flash": "^0.0.2",
         "express-session": "^1.17.2",
         "express-validator": "^6.13.0",
-        "laravel-mix": "^1.0",
+        "laravel-mix": "^6.0.39",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.34",
         "mongoose": "^6.0.13",
+        "multer": "^1.4.4",
         "noty": "^3.2.0-beta-deprecated",
         "passport": "^0.5.0",
         "passport-facebook": "^3.0.0",
         "passport-google-oauth20": "^2.0.0",
         "passport-local": "^1.0.0",
+        "resolve-url-loader": "3.1.0",
+        "shortid": "^2.2.16",
         "socket.io": "^4.4.0",
-        "validator": "^13.7.0"
+        "stripe": "^8.191.0",
+        "sweetalert": "^2.1.2",
+        "validator": "^13.7.0",
+        "vue-template-compiler": "^2.6.14"
+    },
+    "devDependencies": {
+        "@babel/plugin-transform-runtime": "^7.16.4",
+        "@babel/runtime": "^7.16.3",
+        "sass": "^1.44.0",
+        "sass-loader": "^12.3.0"
     }
 }

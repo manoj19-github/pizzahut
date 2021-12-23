@@ -9,8 +9,22 @@ const adminOrderController=require("../app/http/controllers/admin/adminOrderCont
 const adminStatusController=require("../app/http/controllers/admin/statusController")
 const {isLoggedIn,isUser,isAdmin}=require("../app/http/middleware/auth")
 const {goToHome,goToLogin}=require("../app/http/middleware/goToHome")
+const {uploads}=require("../app/http/middleware/uploadImage")
+//const passport=require("passport")
+// const multer=require("multer")
+// const shortid=require("shortid")
+// const path=require("path")
+// const dest=path.join(__dirname,"public/images")
+// const storage=multer.diskStorage({
+//   destination:function(req,file,cb){
+//     cb(null,dest)
+//   },
+//   filename:function(req,file,cb){
+//     cb(null,shortid.generate()+"-"+file.originalname)
+//   }
+// })
+// const uploads=multer({storage})
 
-const passport=require("passport")
 
   // routing
 
@@ -21,8 +35,12 @@ const passport=require("passport")
   Router.get("/customer/orders/:id",isUser,orderController().showOrder)
   Router.get("/register",isLoggedIn,authController().register)
   Router.get("/admin/orders",isAdmin,adminOrderController().index)
+  Router.get("/update-cart",isUser,cartController().check)
+  Router.get("/admin/products",isAdmin,adminOrderController().products)
 
-
+  Router.post(`/admin/product/delete`,isAdmin,adminOrderController().deleteProduct)
+  Router.post(`/admin/product/edit`,isAdmin,adminOrderController().editProduct)
+  Router.post("/admin/product/insert",isAdmin,uploads.single("image"),adminOrderController().insertOrUpdate)
   Router.post("/admin/order/status",isAdmin,adminStatusController().update)
   Router.post("/login",authController().localLogin)
   Router.post("/register",authController().postRegister)

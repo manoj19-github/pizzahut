@@ -20,6 +20,6 @@ const productSchema=mongoose.Schema({
     required:true,
     trim:true
   }
-})
+},{timestamps:true})
 const Product=mongoose.model("Product",productSchema)
 module.exports=Product

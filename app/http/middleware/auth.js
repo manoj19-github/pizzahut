@@ -34,4 +34,20 @@ const isAdmin=async(req,res,next)=>{
       return res.redirect("/login")
     }
 }
-module.exports={isLoggedIn,isUser,isAdmin}
+
+const checkAdmin=async(userId)=>{
+
+    try{
+      if(userId){
+        const admin=await User.find({$and:[{_id:userId},{role:"admin"}]})
+        if(admin.length>0) return true
+      }
+      return false
+    }catch(err){
+      console.log("auth page",err)
+      return false
+    }
+}
+
+
+module.exports={isLoggedIn,isUser,isAdmin,checkAdmin}

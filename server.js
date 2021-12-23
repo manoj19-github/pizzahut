@@ -12,6 +12,7 @@ const flash=require("express-flash")
 const MongoDBStore = require('connect-mongo');
 const passport=require("passport")
 const localPassport=require("./app/config/passport")
+const {checkAdmin}=require("./app/http/middleware/auth")
 const Emitter=require("events")
 
 
@@ -43,6 +44,7 @@ app.use(express.urlencoded({extended:false}))
 app.use(session({
 
     secret:process.env.COOKIE_SECRET,
+    key:"user_id",
     resave: false,
     saveUnitialized: false,
     store:MongoDBStore.create({
@@ -61,10 +63,19 @@ app.set('eventEmitter',eventEmitter)
 app.use(flash())
 
 // Global middleware
-app.use((req,res,next)=>{
+app.use(async(req,res,next)=>{
   res.locals.session=req.session
-  res.locals.user=req?.session?.passport?.user
 
+  res.locals.user=req?.session?.passport?.user
+  try{
+    if(await checkAdmin(req?.session?.passport?.user)){
+      res.locals.isAdmin=true
+    }else{
+      res.locals.isAdmin=false
+    }
+  }catch(err){
+    console.log("primary middleware ",err)
+  }
   next()
 })
 
@@ -73,7 +84,11 @@ app.use(passport.initialize())
 app.use(passport.session())
 localPassport(passport)
 app.use("/",webRoutes)
+//  for 404 custom error
+app.use((req,res)=>{
+  res.status(404).render("errors/404")
 
+})
 // server port
 const PORT=process.env.PORT||5000
 
@@ -88,11 +103,8 @@ const server=app.listen(PORT,async()=>{
 // Socket work
 const io=require("socket.io")(server)
 io.on("connection",(socket)=>{
-
   //  Join
-  console.log("socket id",socket.id)
   socket.on("join",(orderId)=>{
-    console.log(orderId)
     socket.join(orderId)
   })
 })
@@ -100,6 +112,10 @@ eventEmitter.on("orderUpdated",(data)=>{
   io.to(`order_${data.id}`).emit('orderUpdated',data)
 })
 eventEmitter.on("orderPlaced",(orderData)=>{
-  console.log("order placed again")
   io.to("adminRoom").emit("orderPlaced",orderData)
 })
+eventEmitter.on("paymentUpdated",(data)=>{
+  io.to(`order_${data.id}`).emit("paymentUpdated",data)
+})
+
+//io.to(`order_${req.body.orderId}`).emit('paymentUpdated',"paid")

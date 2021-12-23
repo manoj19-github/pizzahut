@@ -1,8 +1,10 @@
 // pacakage requirements
 import axios from "axios"
 import Noty from "noty"
-import  initAdmin from "./admin"
+
+import  {addProduct,initAdmin,fetchProduct} from "./admin"
 import moment from "moment-timezone"
+import {initStrip} from "./strip"
 
 // target our cart-btn and cart-counter
 let addToCart=document.querySelectorAll(".add-to-cart")
@@ -13,20 +15,31 @@ let logoutBtn=document.querySelector("#logout-btn")
 let alertMsg=document.querySelector("#success-alert")
 let deliveryStatus=document.querySelector(".deliveryStatus")
 let delivery=document.querySelector(".delivery")
+let mobileMenu=document.querySelector("#mobile-menu")
+let burger=document.querySelector("#burger")
 
 let Order=document.querySelector("#hiddenOrder")?
   document.querySelector("#hiddenOrder").value:null
 let statuses=document.querySelectorAll(".status-line")
 let orderData;
+
+
+burger.addEventListener("click",()=>{
+  if(mobileMenu.classList.contains("hidden")){
+    mobileMenu.classList.remove("hidden")
+  }else{
+    mobileMenu.classList.add("hidden")
+  }
+})
 if(Order){
   orderData=JSON.parse(Order)
 }
-
-logoutBtn.addEventListener("click",(e)=>{
-  e.preventDefault()
-  console.log("logout btn click")
-  logoutForm.submit()
-})
+if(logoutBtn){
+  logoutBtn.addEventListener("click",(e)=>{
+    e.preventDefault()
+    logoutForm.submit()
+  })
+}
 
 //data-cartId
 // cart functionality method
@@ -52,7 +65,9 @@ const deleteCart=async(delId)=>{
 
   }
 }
+
 const updateCart=async(product)=>{
+
   try{
       const {data}=await axios.post("/update-cart",product)
 
@@ -144,12 +159,14 @@ const updateStatus=(orderData)=>{
 
   }
 }
-console.log("manoj")
+
 if(orderData){
   updateStatus(orderData)
 }
 
-console.log("manoj")
+
+initStrip()
+
 
 
 // socket work
@@ -161,10 +178,17 @@ if(orderData){
 
 let adminAreaPath = window.location.pathname
   console.log("adminpath",adminAreaPath)
-if(adminAreaPath.includes("admin")){
-  initAdmin(socket)
-  console.log("join")
-  socket.emit("join","adminRoom")
+
+  if(adminAreaPath ===  "/admin/orders"){
+    initAdmin(socket)
+    console.log("join")
+    socket.emit("join","adminRoom")
+
+}
+if(adminAreaPath === "/admin/products"){
+  fetchProduct()
+
+
 
 }
 socket.on('orderUpdated',(data)=>{
@@ -172,7 +196,6 @@ socket.on('orderUpdated',(data)=>{
     const updatedOrder={...orderData}
     updatedOrder.updatedAt=moment().format()
     updatedOrder.status=data.status
-    console.log(data)
     updateStatus(updatedOrder)
     new Noty({
       type:"success",

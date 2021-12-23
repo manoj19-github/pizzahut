@@ -12,6 +12,10 @@ const statusCTRL=(req,res,next)=>{
           if(order) {
             // Emit event
             const eventEmitter=req.app.get("eventEmitter")
+            if(req.body.status==="delivered"){
+              eventEmitter.emit("paymentUpdated",{id:req.body.orderId,payment:"paid"})
+
+            }
             eventEmitter.emit("orderUpdated",{id:req.body.orderId,status:req.body.status})
             req.flash("success","status  updated successfully")
             return res.redirect("/admin/orders")

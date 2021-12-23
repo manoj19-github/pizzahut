@@ -12,11 +12,15 @@ const cartController=()=>{
       }
 
     },
+    check(req,res){
+      return res.redirect("/login")
+    },
     update(req,res){
       // for the first time creating cart
 
       if(!req.session.passport.user){
         req.flash("error","login first then try")
+        console.log("err")
         return res.redirect("/login")
       }
       if(!req.session.cart){
